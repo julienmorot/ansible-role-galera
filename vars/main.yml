@@ -1,0 +1,8 @@
+---
+
+mariadb_packages: [ mariadb-server, mariadb-client ]
+mariadb_service_name: "mariadb"
+mariadb_conf_dir: "/etc/mysql/mariadb.conf.d"
+mariadb_server_conf: "50-server.cnf"
+
+

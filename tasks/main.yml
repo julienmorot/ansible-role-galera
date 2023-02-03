@@ -1,0 +1,6 @@
+---
+
+- name: Install Cluster
+  ansible.builtin.include_tasks: install.yml
+  tags:
+    - install_galera_cluster
