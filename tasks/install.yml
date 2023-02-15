@@ -23,3 +23,34 @@
 
 - meta:
     flush_handlers
+
+- name: Install Galera packages
+  ansible.builtin.package:
+    name: "{{ galera_packages }}"
+    state: present
+
+- name: Deploy galera configuration
+  ansible.builtin.template:
+    src: "{{ mariadb_server_conf }}.j2"
+    dest: "{{ mariadb_conf_dir }}/{{ mariadb_galera_conf }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Mariadb
+
+- name: Stop service Mariadb on all nodes
+  ansible.builtin.service:
+    name: "{{ mariadb_service_name }}"
+    state: stopped
+  when: galera_bootstrap_cluster == true
+
+- name: Bootstrap cluster on galera_bootstrap_node
+  ansible.builtin.command:
+    cmd: galera_new_cluster
+  when: ansible_hostname == galera_bootstrap_node and galera_bootstrap_cluster == true
+
+- name: Start service Mariadb on all other nodes
+  ansible.builtin.service:
+    name: "{{ mariadb_service_name }}"
+    state: stopped
+  when: ansible_hostname != galera_bootstrap_node and galera_bootstrap_cluster == true

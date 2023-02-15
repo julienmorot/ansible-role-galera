@@ -1,0 +1,4 @@
+---
+
+galera_bootstrap_cluster: false
+galera_cluster_name: "MariaDB Galera Cluster"
