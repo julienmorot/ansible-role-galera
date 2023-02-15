@@ -52,5 +52,5 @@
 - name: Start service Mariadb on all other nodes
   ansible.builtin.service:
     name: "{{ mariadb_service_name }}"
-    state: stopped
+    state: started
   when: ansible_hostname != galera_bootstrap_node and galera_bootstrap_cluster == true
