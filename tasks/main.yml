@@ -1,6 +1,27 @@
 ---
 
+- name: "Set fact galera_stop if tag galera_stop is provided"
+  ansible.builtin.set_fact: 
+    galera_stop: true
+  tags: galera_stop
+
+- name: "Set fact galera_start if tag galera_start is provided"
+  ansible.builtin.set_fact:
+    galera_start: true
+  tags: galera_start
+
 - name: Install Cluster
   ansible.builtin.include_tasks: install.yml
   tags:
     - install_galera_cluster
+  when: galera_start is not defined or galera_start is not defined
+
+- name: Stop cluster
+  ansible.builtin.include_tasks: stop_cluster.yml
+  tags: galera_stop
+  when: galera_stop == true
+
+- name: Start cluster
+  ansible.builtin.include_tasks: start_cluster.yml
+  tags: galera_start
+  when: galera_start == true

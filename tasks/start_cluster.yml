@@ -1,0 +1,15 @@
+---
+
+- name: Start service Mariadb on bootstrap node
+  ansible.builtin.command:
+    cmd: galera_new_cluster
+  when: galera_start == true and ansible_hostname == galera_bootstrap_node
+  tags: galera_start
+
+- name: Start service Mariadb on all other nodes
+  ansible.builtin.service:
+    name: "{{ mariadb_service_name }}"
+    state: started
+  when: galera_start == true and ansible_hostname != galera_bootstrap_node
+  tags: galera_start
+
