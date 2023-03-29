@@ -4,4 +4,4 @@
   ansible.builtin.service:
     name: "{{ mariadb_service_name }}"
     state: restarted 
-    serial: 1
+    throttle: 1
